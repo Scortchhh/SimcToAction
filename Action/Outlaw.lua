@@ -37,10 +37,10 @@ local function build() then
 		return A.EchoingReprimand:Show(icon)
 	end
 
-	if A.SerratedBoneSpike:IsReady(unitID, true) and Unit(unitID):HasDeBuffs(A.SerratedBoneSpike.ID) == 0 then
+	if A.SerratedBoneSpike:IsReady(unitID, true) and Unit(unitID):HasDeBuffs(A.SerratedBoneSpike.ID) == 0  then
 		return A.SerratedBoneSpike:Show(icon)
 	end
-	if A.SerratedBoneSpike:IsReady(unitID, true) and Unit(unitID):HasDeBuffs(A.SerratedBoneSpike.ID) == 0 then
+	if A.SerratedBoneSpike:IsReady(unitID, true) and Unit(unitID):TimeToDie()  Unit(unitID):HasDeBuffs(A.SerratedBoneSpike.ID) *600),if= Unit(unitID):HasDeBuffs(A.SerratedBoneSpike.ID) == 0  then
 		return A.SerratedBoneSpike:Show(icon)
 	end
 	if A.SerratedBoneSpike:IsReady(unitID, true) and Unit(unitID):TimeToDie() <=5orcooldown.serrated_bone_spike.max_charges-charges_fractional<=0.25or Player:ComboPointsDeficit() =cp_gainand!buff.skull_and_crossbones.upand Player:EnergyTimeToMax() >1 then
@@ -49,14 +49,14 @@ local function build() then
 	if A.PistolShot:IsReady(unitID, true) and Unit('player'):HasBuffs(A.Opportunity.ID) ~= 0 and( Player:EnergyDeficit() >(energy.regen+10)or Player:ComboPointsDeficit() <=1+buff.broadside.uportalent.quick_draw.enabled) then
 		return A.PistolShot:Show(icon)
 	end
-	if A.PistolShot:IsReady(unitID, true) and Unit('player'):HasBuffs(A.Opportunity.ID) ~= 0  then
+	if A.PistolShot:IsReady(unitID, true) and Unit('player'):HasBuffs(A.Opportunity.ID) ~= 0 and(buff.greenskins_wickers.uporbuff.concealed_blunderbuss.up) then
 		return A.PistolShot:Show(icon)
 	end
 	if A.SinisterStrike:IsReady(unitID, true) then
 		return A.SinisterStrike:Show(icon)
 	end
 
-	if A.Gouge:IsReady(unitID, true) and Player:ComboPointsDeficit()  then
+	if A.Gouge:IsReady(unitID, true) and Player:ComboPointsDeficit() >=1+buff.broadside.up then
 		return A.Gouge:Show(icon)
 	end
 end
@@ -66,26 +66,26 @@ local function cds() then
 	if A.Vanish:IsReady(unitID, true) and
 	if A.Vanish:IsReady(unitID, true) and
 	if A.AdrenalineRush:IsReady(unitID, true) and
-	if A.Fleshcraft:IsReady(unitID, true) and Player:EnergyTimeToMax()  then
+	if A.Fleshcraft:IsReady(unitID, true) and Player:EnergyTimeToMax() >2) then
 		return A.Fleshcraft:Show(icon)
 	end
 	if A.Dreadblades:IsReady(unitID, true) and
 	if A.RollTheBones:IsReady(unitID, true) and
-	if A.MarkedForDeath:IsReady(unitID, true) and Player:ComboPointsDeficit() or!stealthed.rogueand Player:ComboPointsDeficit() >=cp_max_spend-1) then
+	if A.MarkedForDeath:IsReady(unitID, true) and Unit(unitID):TimeToDie() ,if=raid_event.adds.upand(target.time_to_die< Player:ComboPointsDeficit() or!stealthed.rogueand Player:ComboPointsDeficit() >=cp_max_spend-1) then
 		return A.MarkedForDeath:Show(icon)
 	end
-	if A.MarkedForDeath:IsReady(unitID, true) and Player:ComboPointsDeficit()  then
+	if A.MarkedForDeath:IsReady(unitID, true) and Player:ComboPointsDeficit() >=cp_max_spend-1 then
 		return A.MarkedForDeath:Show(icon)
 	end
-	if A.Variable:IsReady(unitID, true) and
+	if A.KillingSpreeVanishSync:IsReady(unitID, true) and
 	if A.KillingSpree:IsReady(unitID, true) and Player:EnergyDeficit() >( Player:EnergyRegen() *2+15)orspell_targets.blade_flurry>(2-buff.deathly_shadows.up)ormaster_assassin_remains>0) then
 		return A.KillingSpree:Show(icon)
 	end
-	if A.BladeRush:IsReady(unitID, true) and Player:EnergyTimeToMax()  then
+	if A.BladeRush:IsReady(unitID, true) and Player:EnergyTimeToMax() >2andbuff.dreadblades.downorenergy<=30orspell_targets>2) then
 		return A.BladeRush:Show(icon)
 	end
 	if A.Shadowmeld:IsReady(unitID, true) and
-	if A.Potion:IsReady(unitID, true) and Unit(unitID):TimeToDie()  then
+	if A.Potion:IsReady(unitID, true) and Unit(unitID):TimeToDie() <30orbuff.adrenaline_rush.up then
 		return A.Potion:Show(icon)
 	end
 	if A.BloodFury:IsReady(unitID, true) then
@@ -104,17 +104,19 @@ local function cds() then
 		return A.AncestralCall:Show(icon)
 	end
 
-	if A.UseItems:IsReady(unitID, true) and Unit(unitID):TimeToDie()  then
+	if A.UseItems:IsReady(unitID, true) and Unit(unitID):TimeToDie() <=20 then
 		return A.UseItems:Show(icon)
 	end
-	if A.UseItems:IsReady(unitID, true) and Unit(unitID):TimeToDie()  then
+	if A.UseItems:IsReady(unitID, true) and Unit(unitID):TimeToDie() <=20 then
 		return A.UseItems:Show(icon)
 	end
 end
 
 local function finish() then
-	if A.BetweenTheEyes:IsReady(unitID, true) and
-	if A.SliceAndDice:IsReady(unitID, true) and Unit(unitID):TimeToDie()  then
+	if A.BetweenTheEyes:IsReady(unitID, true) and Unit(unitID):TimeToDie() >3 then
+		return A.BetweenTheEyes:Show(icon)
+	end
+	if A.SliceAndDice:IsReady(unitID, true) and Unit(unitID):TimeToDie() andrefreshable then
 		return A.SliceAndDice:Show(icon)
 	end
 	if A.Dispatch:IsReady(unitID, true) then

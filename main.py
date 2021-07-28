@@ -3,15 +3,17 @@ import os
 # pve
 RoguePoisons = ["MindNumbingPoison", "Instant Poison"]
 Actions = ["actions.precombat=", "actions=", "actions+=/", "actions.build=", "actions.build+=/", "actions.cds=",
-           "actions.cds+=/", "actions.finish=", "actions.finish+=/", "actions.stealth=","actions.stealth+=/"]
+           "actions.cds+=/", "actions.cooldown=", "actions.cooldown+=/", "actions.finish=", "actions.finish+=/", "actions.stealth=","actions.stealth+=/"]
 KeyWords = [",", ",if=", "if=", "if=!", "!", "&", "|", ">=", ">", "<=", "<"]
 blackListed = ["#"]
 Conditionals = {"energy.deficit": " Player:EnergyDeficit() ", "energy.regen": " Player:EnergyRegen() ",
                 "combo_points.deficit": " Player:ComboPointsDeficit() ",
                 "buff.opportunity.up": " Unit('player'):HasBuffs(A.Opportunity.ID) ~= 0 ",
-                "!dot.serrated_bone_spike_dot.ticking": " Unit(unitID):HasDeBuffs(A.SerratedBoneSpike.ID) == 0",
+                "!dot.serrated_bone_spike_dot.ticking": " Unit(unitID):HasDeBuffs(A.SerratedBoneSpike.ID) == 0 ",
                 "energy.time_to_max": " Player:EnergyTimeToMax() ",
-                "fight_remains": " Unit(unitID):TimeToDie() "}
+                "fight_remains": " Unit(unitID):TimeToDie() ",
+                "target.time_to_die": " Unit(unitID):TimeToDie() ",
+                "dot.serrated_bone_spike_dot.ticking": " Unit(unitID):HasDeBuffs(A.SerratedBoneSpike.ID) "}
 
 
 def refactorWord(word):
@@ -33,6 +35,9 @@ def writeToFile(name, body):
     file.write(body + "\n")
 
 
+def checkForBuffsAndDots():
+    pass
+
 lastAction = ""
 lastAction2 = ""
 def processData(line, fileName):
@@ -51,6 +56,7 @@ def processData(line, fileName):
             return
         if line.find(AllActions) == 0:
             everythingElseAfterAction = line.split(AllActions, 1)[1]
+            everythingElseAfterAction = everythingElseAfterAction.replace("variable,name=", "")
             if lastAction != AllActions:
                 lastAction = lastAction.replace("=", "+=/")
                 if lastAction != AllActions:
@@ -83,12 +89,20 @@ def processData(line, fileName):
                                     inBetweenParser2 = ""
                                     for conditional2 in Conditionals:
                                         if beforeFirstSplit.find(conditional2) != -1:
+                                            beforeConditional = beforeFirstSplit.split(conditional2, 1)[0]
                                             afterConditional = beforeFirstSplit.split(conditional2, 1)[1]
-                                            inBetweenParser2 = Conditionals[conditional2] + afterConditional
+                                            xd = ""
+                                            for conditional3 in Conditionals:
+                                                if beforeConditional.find(conditional3) != -1:
+                                                    xd = xd + Conditionals[conditional3]
+                                            inBetweenParser2 = xd + Conditionals[conditional2] + afterConditional
                                         if inBetween.find(conditional2) != -1:
                                             beforeConditional = inBetween.split(conditional2, 1)[0]
                                             afterConditional = inBetween.split(conditional2, 1)[1]
                                             inBetweenParser = beforeConditional + Conditionals[conditional2] + afterConditional
+
+                                    if inBetweenParser == "":
+                                        inBetweenParser = inBetween
 
                                     inBetweenParser = inBetweenParser.replace("\n", "")
                                     inBetweenParser2 = inBetweenParser2.replace("\n", "")
@@ -115,6 +129,8 @@ def processData(line, fileName):
 
 
 def main():
+    global lastAction2
+    global lastAction
     simcDir = "simc/"
     for filename in os.listdir(simcDir):
         if filename.endswith(".txt"):
@@ -124,6 +140,8 @@ def main():
                 processData(line, filename)
             writeFile = filename.replace(".txt", ".lua")
             writeToFile(writeFile, "end")
+            lastAction2 = ""
+            lastAction = ""
 
 
 main()
